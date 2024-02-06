@@ -5,7 +5,7 @@ type conversions; i.e., expressions T(x) where x already has type T.
 
 # Install
 
-    go install github.com/mdempsky/unconvert@latest
+    go install github.com/golangci/unconvert@latest
 
 # Usage
 

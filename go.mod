@@ -1,4 +1,4 @@
-module github.com/mdempsky/unconvert
+module github.com/golangci/unconvert
 
 go 1.20
 

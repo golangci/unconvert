@@ -27,6 +27,7 @@ import (
 	"unicode"
 
 	"golang.org/x/text/width"
+	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/packages"
 )
 
@@ -192,8 +193,8 @@ var (
 	flagApply      = flag.Bool("unconvert.apply", false, "apply edits to source files")
 	flagCPUProfile = flag.String("unconvert.cpuprofile", "", "write CPU profile to file")
 	// TODO(mdempsky): Better description and maybe flag name.
-	flagSafe = flag.Bool("unconvert.safe", false, "be more conservative (experimental)")
-	flagV    = flag.Bool("unconvert.v", false, "verbose output")
+	flagSafe     = flag.Bool("unconvert.safe", false, "be more conservative (experimental)")
+	flagV        = flag.Bool("unconvert.v", false, "verbose output")
 	flagTests    = flag.Bool("unconvert.tests", true, "include test source files")
 	flagFastMath = flag.Bool("unconvert.fastmath", false, "remove conversions that force intermediate rounding")
 	flagTags     = flag.String("unconvert.tags", "", "a space-separated list of build tags to consider satisfied during the build")
@@ -267,14 +268,15 @@ func nomain() {
 	}
 }
 
-func Run(prog *loader.Program) []token.Position {
-	m := computeEditsFromProg(prog)
+func Run(pass *analysis.Pass) []token.Position {
+	m := mergeEdits([]string{pass.Pkg.Path()}, [][]string{nil})
 	var conversions []token.Position
 	for _, positions := range m {
 		for pos := range positions {
 			conversions = append(conversions, pos)
 		}
 	}
+	sort.Sort(byPosition(conversions))
 	return conversions
 }
 
