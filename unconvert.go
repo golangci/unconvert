@@ -187,19 +187,6 @@ func rub(buf []byte) []byte {
 	return res.Bytes()
 }
 
-var (
-	flagAll        = flag.Bool("all", false, "type check all GOOS and GOARCH combinations")
-	flagApply      = flag.Bool("apply", false, "apply edits to source files")
-	flagCPUProfile = flag.String("cpuprofile", "", "write CPU profile to file")
-	// TODO(mdempsky): Better description and maybe flag name.
-	flagSafe     = flag.Bool("safe", false, "be more conservative (experimental)")
-	flagV        = flag.Bool("v", false, "verbose output")
-	flagTests    = flag.Bool("tests", true, "include test source files")
-	flagFastMath = flag.Bool("fastmath", false, "remove conversions that force intermediate rounding")
-	flagTags     = flag.String("tags", "", "a space-separated list of build tags to consider satisfied during the build")
-	flagConfigs  = flag.String("configs", "", "custom configs to run unconvert (experimental)")
-)
-
 func usage() {
 	fmt.Fprintf(os.Stderr, "usage: unconvert [flags] [package ...]\n")
 	flag.PrintDefaults()
